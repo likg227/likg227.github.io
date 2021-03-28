@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Bellman-Ford算法为什么最多迭代$V - 1$次?我还是没有搞的很懂（尽管我看了《Algorithm》by Jeff和 《算法导论》上的相关证明）{后来我又看了《算法》上的证明，它是用数学归纳法来证明的，关键点在于证明在于算法在第$i$轮后，能够得到$s$到$v_{i}$的最短路径。这个证明令人信服}。Bellman-Ford算法的时间复杂度是$O(VE)$，它可以用来检测负环，检测的标">
+  <meta name="description" content="线段树 线段树就是使用二分的方法将一个数组不停的对半分直到每个节点中数组长度仅为一，而得到的树。 线段树能够在$O(\lg n)$的时间内查找数组的某一个子数组（连续的）的和、对于数组中的元素进行更新。并且存储线段树的空间复杂度为$O(n)$。构造线段树的时间复杂度为$O(n)$。 使用数组来存储线段树的话，开一个大小为$4n$的整型数组存储$sum$即可。 如果空间的利用率不高时，我们可以使用前">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最短路径算法">
-<meta property="og:url" content="http://example.com/2021/03/28/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:title" content="线段树">
+<meta property="og:url" content="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/index.html">
 <meta property="og:site_name" content="Stephen Lee&#39;s Blog">
-<meta property="og:description" content="Bellman-Ford算法为什么最多迭代$V - 1$次?我还是没有搞的很懂（尽管我看了《Algorithm》by Jeff和 《算法导论》上的相关证明）{后来我又看了《算法》上的证明，它是用数学归纳法来证明的，关键点在于证明在于算法在第$i$轮后，能够得到$s$到$v_{i}$的最短路径。这个证明令人信服}。Bellman-Ford算法的时间复杂度是$O(VE)$，它可以用来检测负环，检测的标">
+<meta property="og:description" content="线段树 线段树就是使用二分的方法将一个数组不停的对半分直到每个节点中数组长度仅为一，而得到的树。 线段树能够在$O(\lg n)$的时间内查找数组的某一个子数组（连续的）的和、对于数组中的元素进行更新。并且存储线段树的空间复杂度为$O(n)$。构造线段树的时间复杂度为$O(n)$。 使用数组来存储线段树的话，开一个大小为$4n$的整型数组存储$sum$即可。 如果空间的利用率不高时，我们可以使用前">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-03-28T09:41:57.000Z">
-<meta property="article:modified_time" content="2021-03-28T09:50:24.522Z">
+<meta property="og:image" content="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/%E7%BA%BF%E6%AE%B5%E6%A0%91.png">
+<meta property="article:published_time" content="2021-03-28T11:08:50.000Z">
+<meta property="article:modified_time" content="2021-03-28T11:18:30.405Z">
 <meta property="article:author" content="Stephen Lee">
 <meta property="article:tag" content="Algorithm and Data Structure">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/%E7%BA%BF%E6%AE%B5%E6%A0%91.png">
 
-<link rel="canonical" href="http://example.com/2021/03/28/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>最短路径算法 | Stephen Lee's Blog</title>
+  <title>线段树 | Stephen Lee's Blog</title>
   
 
 
@@ -153,7 +155,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -166,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          最短路径算法
+          线段树
         </h1>
 
         <div class="post-meta">
@@ -177,7 +179,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-03-28 17:41:57 / Modified: 17:50:24" itemprop="dateCreated datePublished" datetime="2021-03-28T17:41:57+08:00">2021-03-28</time>
+              <time title="Created: 2021-03-28 19:08:50 / Modified: 19:18:30" itemprop="dateCreated datePublished" datetime="2021-03-28T19:08:50+08:00">2021-03-28</time>
             </span>
 
           
@@ -191,10 +193,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Bellman-Ford算法"><a href="#Bellman-Ford算法" class="headerlink" title="Bellman-Ford算法"></a>Bellman-Ford算法</h2><p>为什么最多迭代$V - 1$次?我还是没有搞的很懂（尽管我看了《Algorithm》by Jeff和 《算法导论》上的相关证明）{后来我又看了《算法》上的证明，它是用数学归纳法来证明的，关键点在于证明在于算法在第$i$轮后，能够得到$s$到$v_{i}$的最短路径。这个证明令人信服}。Bellman-Ford算法的时间复杂度是$O(VE)$，它可以用来检测负环，检测的标准就是它在第$V$次循环时是否还可以被松弛。而用队列优化的Bellman-Ford算法在一般情况形况下，时间复杂度为$O(V+E)$。它所采用的方法就是将每次遇到的新顶点（不在队列内）加入队列中，然后从队列中弹出顶点来进行放松。Bellman-Ford算法还可以被应用到差分约束系统中（《算法导论》），因为差分约束系统对应的约束图中可能有负边。</p>
-<h2 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h2><p>Dijkstra算法是一种贪心算法，它在计算最短路径树的过程中，每次都将$dist$值最小的非树顶点松弛并加入树中。尽管Dijkstra算法的性能较Bellman-Ford算法有提升，但是Dijkstra算法却不能处理有负边的情况（因为它基于的假设是每添加一条边都会使得路径变得更长）。空间复杂度为$O(V)$时间复杂度为$O(E\lg V)$  （最坏情况下）。</p>
-<h2 id="基于拓扑排序的最短路径算法"><a href="#基于拓扑排序的最短路径算法" class="headerlink" title="基于拓扑排序的最短路径算法"></a>基于拓扑排序的最短路径算法</h2><p>使用拓扑排序的时间复杂度和之后的放松操作的时间复杂度均为$O(V+E)$。拓扑排序是使用深度搜索得到的逆后序，在这个过程中使用了栈。在已知加权图是无环的情况下，这是找出最短路径的最好的方法了。即使是有负边也没关系。</p>
-<h2 id="Floyd-Warshall算法"><a href="#Floyd-Warshall算法" class="headerlink" title="Floyd-Warshall算法"></a>Floyd-Warshall算法</h2><p>既然最短路径问题有最优子结构（《算法导论》），那么贪心和动规就是值得考虑的方法，Dijkstra算法是使用贪心的算法，而Floyd-Warshall算法则是使用动规的算法。Floyd-Warshall算法实现起来比较简单，但是时间复杂度却是$O(V^3)$。它可以求出任意两点间的最短路。同时也可以检测负环，只要检测是否存在$d[i][i]$是负数的点就可以了。</p>
+        <h2 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a><a target="_blank" rel="noopener" href="https://cp-algorithms.com/data_structures/segment_tree.html">线段树</a></h2><img src="/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/%E7%BA%BF%E6%AE%B5%E6%A0%91.png" class="">
+<p>线段树就是使用二分的方法将一个数组不停的对半分直到每个节点中数组长度仅为一，而得到的树。</p>
+<p>线段树能够在$O(\lg n)$的时间内查找数组的某一个子数组（连续的）的和、对于数组中的元素进行更新。并且存储线段树的空间复杂度为$O(n)$。构造线段树的时间复杂度为$O(n)$。</p>
+<p>使用数组来存储线段树的话，开一个大小为$4n$的整型数组存储$sum$即可。</p>
+<p>如果空间的利用率不高时，我们可以使用前序遍历存储来增加空间的利用率。</p>
+<h3 id="线段树扩展："><a href="#线段树扩展：" class="headerlink" title="线段树扩展："></a>线段树扩展：</h3><ol>
+<li><p>找到最大（小）值。方法是将原来存储和的整数改为存储最大（小）值，并相应的修改其他的函数。</p>
+</li>
+<li><p>找到最大值以及它出现的次数。核心方法是使用$pair$存储当前这个顶点对应的片段中的最大值和它的出现次数。</p>
+</li>
+<li><p>计算给定数组片段的最大公约数、最小公倍数。方法是将原来存储和的整数改为存储对应的最大公约数或最小公倍数，并相应的修改其他的函数。</p>
+</li>
+<li><p>计算给定片段中的0的个数，并且计算第$k$个0的索引。将存储的整数改变为对应片段中0出现的次数。在寻找第$k$个0的索引时，采用的方法是这样的：如果$k$小于等于左孩子的0的个数，那就进入左孩子寻找，否则就减掉左孩子的0的个数，进入右孩子寻找。</p>
+</li>
+<li><p>找到最小的$x$使得前$x$个数的和大于或等于给定的数。</p>
+</li>
+<li><p>在给定范围内，找到最小的索引$i$使得$a[i]&gt;k$（$k$是给定的值）。</p>
+</li>
+<li><p>计算给定序列的子序列的和的最大值。元素值可以为负。这个问题稍稍复杂点，需要重写前面的一部分函数，但是思路却相差不多。</p>
+</li>
+<li><p>将对应的片段而不是一些单个的值完全存储于顶点中。空间复杂度为$O(n\lg n)$。</p>
+<p>在给定序列中查找一个大于或等于给定数字的最小数。如果在实现这个功能的同时还想要能够改变元素的话就需要使用到$multiset$。时间复杂度也会改变。还可以使用Fractional Cascading ​进行加速。尽管我在单独学习Fractional Cascading没有学得很懂，但是在作者将其应用到这个里面的时候我还是懂了。有点那种一次搜索多次使用的感觉，但是也是付出了空间增加的代价的。</p>
+</li>
+<li><p>对整个片段加上某个值。建树时采用的方法，是将叶子节点所包含的整数赋值为对应的元素的值，其他的结点所包含的整数值则被赋值为0，表示加到这个片段的所有的元素上的值。更新的方法不必多说。取到某个元素的最新的值的方法是从根节点开始，把沿路所有的节点中所包含的值都给加上。</p>
+</li>
+<li><p>对整个片段进行赋值的方法。这里采用了delayed update​的方法，即收到更新查询时先不更新所有被涉及到的节点，而是更新主要的父节点（即当一整颗子树被涉及到时，只更新这颗子树的根节点）。同时，为了保证每个结点的值（即这个节点对应的片段所应该被赋的值）是正确的，还有一个push函数，它的作用是将父节点的值应用到它的两个子节点上去。在更新和获取对应元素的函数中就会使用到这个push函数。</p>
+</li>
+</ol>
 
     </div>
 
@@ -212,11 +238,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/03/28/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95/" rel="next" title="最小生成树算法">
-      最小生成树算法 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/03/28/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95/" rel="prev" title="最小生成树算法">
+      <i class="fa fa-chevron-left"></i> 最小生成树算法
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -275,7 +301,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bellman-Ford%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">Bellman-Ford算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dijkstra%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">Dijkstra算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">基于拓扑排序的最短路径算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Floyd-Warshall%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">Floyd-Warshall算法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91"><span class="nav-number">1.</span> <span class="nav-text">线段树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%89%A9%E5%B1%95%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">线段树扩展：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

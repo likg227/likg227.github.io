@@ -147,6 +147,152 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Stephen Lee">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stephen Lee's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="post-title-link" itemprop="url">线段树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-28 19:08:50 / Modified: 19:18:30" itemprop="dateCreated datePublished" datetime="2021-03-28T19:08:50+08:00">2021-03-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a><a target="_blank" rel="noopener" href="https://cp-algorithms.com/data_structures/segment_tree.html">线段树</a></h2><img src="/2021/03/28/%E7%BA%BF%E6%AE%B5%E6%A0%91/%E7%BA%BF%E6%AE%B5%E6%A0%91.png" class="">
+<p>线段树就是使用二分的方法将一个数组不停的对半分直到每个节点中数组长度仅为一，而得到的树。</p>
+<p>线段树能够在$O(\lg n)$的时间内查找数组的某一个子数组（连续的）的和、对于数组中的元素进行更新。并且存储线段树的空间复杂度为$O(n)$。构造线段树的时间复杂度为$O(n)$。</p>
+<p>使用数组来存储线段树的话，开一个大小为$4n$的整型数组存储$sum$即可。</p>
+<p>如果空间的利用率不高时，我们可以使用前序遍历存储来增加空间的利用率。</p>
+<h3 id="线段树扩展："><a href="#线段树扩展：" class="headerlink" title="线段树扩展："></a>线段树扩展：</h3><ol>
+<li><p>找到最大（小）值。方法是将原来存储和的整数改为存储最大（小）值，并相应的修改其他的函数。</p>
+</li>
+<li><p>找到最大值以及它出现的次数。核心方法是使用$pair$存储当前这个顶点对应的片段中的最大值和它的出现次数。</p>
+</li>
+<li><p>计算给定数组片段的最大公约数、最小公倍数。方法是将原来存储和的整数改为存储对应的最大公约数或最小公倍数，并相应的修改其他的函数。</p>
+</li>
+<li><p>计算给定片段中的0的个数，并且计算第$k$个0的索引。将存储的整数改变为对应片段中0出现的次数。在寻找第$k$个0的索引时，采用的方法是这样的：如果$k$小于等于左孩子的0的个数，那就进入左孩子寻找，否则就减掉左孩子的0的个数，进入右孩子寻找。</p>
+</li>
+<li><p>找到最小的$x$使得前$x$个数的和大于或等于给定的数。</p>
+</li>
+<li><p>在给定范围内，找到最小的索引$i$使得$a[i]&gt;k$（$k$是给定的值）。</p>
+</li>
+<li><p>计算给定序列的子序列的和的最大值。元素值可以为负。这个问题稍稍复杂点，需要重写前面的一部分函数，但是思路却相差不多。</p>
+</li>
+<li><p>将对应的片段而不是一些单个的值完全存储于顶点中。空间复杂度为$O(n\lg n)$。</p>
+<p>在给定序列中查找一个大于或等于给定数字的最小数。如果在实现这个功能的同时还想要能够改变元素的话就需要使用到$multiset$。时间复杂度也会改变。还可以使用Fractional Cascading ​进行加速。尽管我在单独学习Fractional Cascading没有学得很懂，但是在作者将其应用到这个里面的时候我还是懂了。有点那种一次搜索多次使用的感觉，但是也是付出了空间增加的代价的。</p>
+</li>
+<li><p>对整个片段加上某个值。建树时采用的方法，是将叶子节点所包含的整数赋值为对应的元素的值，其他的结点所包含的整数值则被赋值为0，表示加到这个片段的所有的元素上的值。更新的方法不必多说。取到某个元素的最新的值的方法是从根节点开始，把沿路所有的节点中所包含的值都给加上。</p>
+</li>
+<li><p>对整个片段进行赋值的方法。这里采用了delayed update​的方法，即收到更新查询时先不更新所有被涉及到的节点，而是更新主要的父节点（即当一整颗子树被涉及到时，只更新这颗子树的根节点）。同时，为了保证每个结点的值（即这个节点对应的片段所应该被赋的值）是正确的，还有一个push函数，它的作用是将父节点的值应用到它的两个子节点上去。在更新和获取对应元素的函数中就会使用到这个push函数。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Stephen Lee">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Stephen Lee's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/28/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">最小生成树算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-28 19:03:00 / Modified: 19:07:19" itemprop="dateCreated datePublished" datetime="2021-03-28T19:03:00+08:00">2021-03-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Prim 和 Kruskal都是贪心算法。前者是每次都将权重最小的横切边加入树中，后者则是按照边的权重顺序（从小到大）来处理它们，期间使用并查集来避免构成环的问题。时间复杂度分别为$O(E\lg E)${$O(E\lg V)$} 、$O(E\lg E)$  。前者的时间复杂度有不同的两种是因为可能有两种情况：延时的和即时的。同样的，这两种情况的空间复杂度也有区别。</p>
+<p>Boruvka’s algorithm。这是一个很古老的算法，它的时间复杂度为$O(E\lg V)$。它也是贪心思想的应用。对于每个子集，每次都找出它与其他子集间的最短边（每个子集只有一条对应的最短边），然后将对应的子集合并。最后得到了最小生成树。这个算法使用了并查集。<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/boruvkas-algorithm-greedy-algo-9/">Geeksforgeeks的讲解</a>很好。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -271,7 +417,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
